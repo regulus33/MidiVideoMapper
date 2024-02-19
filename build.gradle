@@ -31,7 +31,7 @@ application {
 
 javafx {
     version = '17.0.6'
-    modules = ['javafx.controls', 'javafx.fxml', 'javafx.media']
+    modules = ['javafx.controls', 'javafx.fxml', 'javafx.media', 'javafx.graphics']
 }
 
 dependencies {
@@ -47,6 +47,10 @@ dependencies {
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
+    implementation 'org.xerial:sqlite-jdbc:3.45.1.0'
+    implementation 'uk.co.caprica:vlcj-javafx:1.2.0'
+    implementation 'uk.co.caprica:vlcj:4.8.2'
+
 }
 
 test {

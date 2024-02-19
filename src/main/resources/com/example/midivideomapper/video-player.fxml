@@ -15,7 +15,7 @@
          <children>
             <HBox alignment="CENTER" prefHeight="88.0" prefWidth="850.0">
                <children>
-                  <Slider fx:id="timeSlider" prefHeight="16.0" prefWidth="563.0" HBox.hgrow="ALWAYS">
+                  <Slider fx:id="timeSlider" onMousePressed="#sliderPressed" prefHeight="16.0" prefWidth="563.0" HBox.hgrow="ALWAYS">
                      <padding>
                         <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                      </padding>
