@@ -1,66 +1,100 @@
-//package com.example.midivideomapper;
-//
-//import javafx.application.Platform;
-//import javafx.fxml.FXML;
-//import javafx.scene.canvas.Canvas;
-//import javafx.scene.canvas.GraphicsContext;
-//import javafx.scene.image.PixelBuffer;
-//import javafx.scene.image.PixelFormat;
-//import javafx.scene.image.WritableImage;
-//import javafx.scene.layout.StackPane;
-//import javafx.stage.FileChooser;
-//import uk.co.caprica.vlcj.factory.MediaPlayerFactory;
-//import uk.co.caprica.vlcj.player.base.MediaPlayer;
-//import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
-//import uk.co.caprica.vlcj.player.embedded.videosurface.CallbackVideoSurface;
-//
-//import java.io.File;
-//import java.nio.ByteBuffer;
-//
-//public class VideoPlayerController {
-//
-//	@FXML
-//	private StackPane videoPane;
-//
-//	private Canvas canvas;
-//	private WritableImage writableImage;
-//	private PixelBuffer<ByteBuffer> pixelBuffer;
-//
-//	//
-//	private EmbeddedMediaPlayer mediaPlayer;
-//	private MediaPlayerFactory mediaPlayerFactory;
-//
-//	public void initialize() {
-//		// factories are a cool oop pattern that makes instantiation from the caller super simple.
-//		// we don't need to worry about what args an EmbeddedMediaPlayer would need.
-//		mediaPlayerFactory = new MediaPlayerFactory();
-//		mediaPlayer = mediaPlayerFactory.mediaPlayers().newEmbeddedMediaPlayer();
-//
-//		int width = 640; // Set to your video's width
-//		int height = 360; // Set to your video's height
-//		canvas = new Canvas(width, height);
-//		videoPane.getChildren().add(canvas);
-//
-//		// Initialize PixelBuffer
-//		ByteBuffer byteBuffer = ByteBuffer.allocateDirect(width * height * 4);
-//		pixelBuffer = new PixelBuffer<>(width, height, byteBuffer, PixelFormat.getByteBgraPreInstance());
-//
-//		writableImage = new WritableImage(pixelBuffer);
-//		GraphicsContext gc = canvas.getGraphicsContext2D();
-//
-//		// Set the video surface for the media player
-//		CallbackVideoSurface videoSurface = mediaPlayerFactory.videoSurfaces().newVideoSurface(new JavaFxVideoSurfaceAdapter(pixelBuffer, gc, writableImage));
-//		mediaPlayer.videoSurface().set(videoSurface);
-//
-//		// Load and play video after selection
-//		selectAndPlayVideo();
-//	}
-//
-//	private void selectAndPlayVideo() {
-//		FileChooser fileChooser = new FileChooser();
-//		File file = fileChooser.showOpenDialog(videoPane.getScene().getWindow());
-//		if (file != null) {
-//			mediaPlayer.media().play(file.getAbsolutePath());
-//		}
-//	}
-//}
+package com.example.midivideomapper;
+
+import java.net.URL;
+import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import uk.co.caprica.vlcj.factory.MediaPlayerFactory;
+import uk.co.caprica.vlcj.javafx.videosurface.ImageViewVideoSurface;
+import uk.co.caprica.vlcj.player.base.MediaPlayer;
+import uk.co.caprica.vlcj.player.base.MediaPlayerEventAdapter;
+import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
+
+public class VideoPlayerController {
+
+
+	private MediaPlayerFactory mediaPlayerFactory;
+
+	private EmbeddedMediaPlayer embeddedMediaPlayer;
+
+	public String videoLocation = "/home/zachary/Desktop/tokyo-walk.mp4";
+
+
+	@FXML
+	private ResourceBundle resources;
+
+	@FXML
+	private URL location;
+
+	@FXML
+	private Button btnPlay;
+
+	@FXML
+	private ImageView imageView;
+
+	@FXML
+	private Label labelDuration;
+
+	@FXML
+	private Slider timeSlider;
+
+	@FXML
+	void btnPlay(MouseEvent event) {
+
+	}
+
+	@FXML
+	void selectVideo(ActionEvent event) {
+	}
+
+	@FXML
+	void sliderPressed(MouseEvent event) {
+
+	}
+
+	private MediaPlayerEventAdapter setupMediaPlayerEventListeners() {
+		return new MediaPlayerEventAdapter() {
+			@Override
+			public void playing(MediaPlayer mediaPlayer) {
+			}
+
+			@Override
+			public void paused(MediaPlayer mediaPlayer) {
+			}
+
+			@Override
+			public void stopped(MediaPlayer mediaPlayer) {
+			}
+
+			@Override
+			public void timeChanged(MediaPlayer mediaPlayer, long newTime) {
+			}
+		};
+	}
+
+
+
+	@FXML
+	void initialize() {
+		assert btnPlay != null : "fx:id=\"btnPlay\" was not injected: check your FXML file 'video-player.fxml'.";
+		assert imageView != null : "fx:id=\"imageView\" was not injected: check your FXML file 'video-player.fxml'.";
+		assert labelDuration != null : "fx:id=\"labelDuration\" was not injected: check your FXML file 'video-player.fxml'.";
+		assert timeSlider != null : "fx:id=\"timeSlider\" was not injected: check your FXML file 'video-player.fxml'.";
+		// Initialize the media player factory and player
+		this.mediaPlayerFactory = new MediaPlayerFactory();
+		this.embeddedMediaPlayer = mediaPlayerFactory.mediaPlayers().newEmbeddedMediaPlayer();
+
+		// Now imageView is initialized, so we can set the video surface
+		this.embeddedMediaPlayer.videoSurface().set(new ImageViewVideoSurface(this.imageView));
+		this.embeddedMediaPlayer.events().addMediaPlayerEventListener(setupMediaPlayerEventListeners());
+
+		// Play video
+		embeddedMediaPlayer.media().play(videoLocation);
+		embeddedMediaPlayer.controls().setPosition(0.4f);
+	}
+}
