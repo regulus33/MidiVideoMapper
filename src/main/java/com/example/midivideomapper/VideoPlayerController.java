@@ -102,8 +102,6 @@ public class VideoPlayerController {
 			@Override
 			public void timeChanged(MediaPlayer mediaPlayer, long newTime) {
 				Platform.runLater(() -> {
-					// Update UI to reflect that playback is paused
-					System.out.println(newTime);
 					double total = mediaPlayer.status().length();
 					double ratio = newTime / total;
 					double m = timeSlider.getMax();
@@ -128,6 +126,6 @@ public class VideoPlayerController {
 		imageView.fitHeightProperty().bind(imageContainer.heightProperty());
 		// Play video
 		embeddedMediaPlayer.media().play(videoLocation);
-		embeddedMediaPlayer.controls().setPosition(0.4f);
+
 	}
 }
